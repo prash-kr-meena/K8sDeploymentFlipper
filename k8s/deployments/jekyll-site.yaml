@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jekyll-site-deployment
+  labels:
+    app: jekyll-site
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jekyll-site
+  template:
+    metadata:
+      name: jekyll-site
+      labels:
+        app: jekyll-site
+    spec:
+      containers:
+        - name: jekyll-site
+          image: jekyll/jekyll:4.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 4000
+              protocol: TCP
+      restartPolicy: Always
+      

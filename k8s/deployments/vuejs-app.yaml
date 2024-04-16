@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vuejs-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vuejs-app
+  template:
+    metadata:
+      labels:
+        app: vuejs-app
+    spec:
+      containers:
+      - name: vuejs-app
+        image: vueschool/forum:latest
+        ports:
+        - containerPort: 80

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-photo-feed-deployment
+  labels:
+    app: react-photo-feed
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: react-photo-feed
+  template:
+    metadata:
+      name: react-photo-feed
+      labels:
+        app: react-photo-feed
+    spec:
+      containers:
+        - name: react-photo-feed
+          image: dockersamples/react-photo-feed:1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+      restartPolicy: Always
+      
