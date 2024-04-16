@@ -3,7 +3,9 @@ kind: Deployment
 metadata:
   name: jekyll-site-deployment
   labels:
-    app: jekyll-site
+    # app: jekyll-site
+    app: mesh
+  namespace: service-mesh
 spec:
   replicas: 1
   selector:

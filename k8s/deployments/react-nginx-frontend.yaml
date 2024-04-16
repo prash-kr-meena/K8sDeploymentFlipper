@@ -1,23 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: react-photo-feed-deployment
+  name: react-nginx-frontend
   labels:
-    app: react-photo-feed
+    app: mesh
+  namespace: service-mesh
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: react-photo-feed
+      app: react-nginx-frontend
   template:
     metadata:
-      name: react-photo-feed
+      name: react-nginx-frontend
       labels:
-        app: react-photo-feed
+        app: react-nginx-frontend
     spec:
       containers:
-        - name: react-photo-feed
-          image: dockersamples/react-photo-feed:1
+        - name: react-nginx-frontend
+          image: neroxxpips/react-nginx_frontend:v1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
