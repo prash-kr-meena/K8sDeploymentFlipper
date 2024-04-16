@@ -1,9 +1,8 @@
 apiVersion: com.meena/v1
 kind: Flipper
 metadata:
-  name: flipper
+  name: deployment-flipper
 spec:
   interval: 1m
   labels:
-    app: flipper
-  namespace: default
+    app: mesh
