@@ -2,6 +2,7 @@ apiVersion: com.meena/v1
 kind: Flipper
 metadata:
   name: deployment-flipper
+  namespace: service-mesh
 spec:
   interval: 1m
   labels:
