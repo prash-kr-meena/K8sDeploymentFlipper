@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-nginx-frontend-v1
+  labels:
+    mesh: 'true'
+  namespace: epic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: react-nginx-frontend-v1
+  template:
+    metadata:
+      labels:
+        app: react-nginx-frontend-v1
+    spec:
+      containers:
+        - name: react-nginx-frontend-v1-container
+          image: neroxxpips/react-nginx_frontend:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: react-nginx-service-v1
+  namespace: epic
+spec:
+  selector:
+    app: react-nginx-frontend-v1
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30003
+  type: NodePort
+
+      
