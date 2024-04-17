@@ -26,8 +26,7 @@ public class DeploymentFlipperReconciler
 
 
   @Override
-  public UpdateControl<DeploymentFlipper> reconcile(DeploymentFlipper resource, Context<DeploymentFlipper> context)
-    throws Exception {
+  public UpdateControl<DeploymentFlipper> reconcile(DeploymentFlipper resource, Context<DeploymentFlipper> context) {
     System.out.println("Reconciling");
     return UpdateControl.noUpdate();
   }
