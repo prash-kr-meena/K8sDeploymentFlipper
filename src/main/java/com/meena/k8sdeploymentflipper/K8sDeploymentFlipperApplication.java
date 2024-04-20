@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class K8sDeploymentFlipperApplication {
 
   public static void main(String[] args) {
+    System.out.println("Spring Main");
     SpringApplication.run(K8sDeploymentFlipperApplication.class, args);
     System.out.println("Spring Started");
   }

@@ -3,8 +3,8 @@ Write a Kubernetes (k8s) Controller to restart deployments
 Problem
 Often times there might be a need do a rolling restart of applications in k8s for complicance reasons (long running
 applications) or to retrigger a mutating webhook (used for sidecar injection for a Service Mesh).
-The task is to implement a k8s controller that does a rolling restart of deployments (basically kubectl rollout restart
-deploy <deployment-name>) only for the deployments that have a specific label (mesh: "true") at a configured interval.
+The task is to implement a k8s controller that does a rolling restart of deployments (basically `kubectl rollout restart
+deploy <deployment-name>`) only for the deployments that have a specific label (mesh: "true") at a configured interval.
 
 The controller should take the following Input Parameters (can be accepted either over command line or read from a
 config map):

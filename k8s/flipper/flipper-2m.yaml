@@ -1,0 +1,9 @@
+apiVersion: com.meena/v1
+kind: Flipper
+metadata:
+  name: deployment-flipper
+  namespace: epic
+spec:
+  interval: 1m
+  labels:
+    mesh: 'true'
