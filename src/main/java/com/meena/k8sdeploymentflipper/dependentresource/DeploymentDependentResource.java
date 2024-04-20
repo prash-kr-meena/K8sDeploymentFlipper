@@ -32,10 +32,7 @@ public class DeploymentDependentResource extends CRUDNoGCKubernetesDependentReso
 
   @Override
   public Deployment update(
-    Deployment actual,
-    Deployment desired,
-    DeploymentFlipper primary,
-    Context<DeploymentFlipper> context
+    Deployment actual, Deployment desired, DeploymentFlipper primary, Context<DeploymentFlipper> context
   ) {
     System.out.println("DeploymentDependentResource update");
     Deployment update = super.update(actual, desired, primary, context);
@@ -46,10 +43,7 @@ public class DeploymentDependentResource extends CRUDNoGCKubernetesDependentReso
 
   @Override
   public void deleteTargetResource(
-    DeploymentFlipper primary,
-    Deployment resource,
-    String key,
-    Context<DeploymentFlipper> context
+    DeploymentFlipper primary, Deployment resource, String key, Context<DeploymentFlipper> context
   ) {
     System.out.println("DeploymentDependentResource deleteTargetResource");
     super.deleteTargetResource(primary, resource, key, context);
