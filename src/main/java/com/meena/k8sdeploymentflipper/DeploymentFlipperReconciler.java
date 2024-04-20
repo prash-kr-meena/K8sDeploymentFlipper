@@ -21,9 +21,7 @@ import org.springframework.stereotype.Component;
   }
 )
 public class DeploymentFlipperReconciler
-  implements Reconciler<DeploymentFlipper>, ErrorStatusHandler<DeploymentFlipper>,
-  Cleaner<DeploymentFlipper> {
-
+  implements Reconciler<DeploymentFlipper>, ErrorStatusHandler<DeploymentFlipper>, Cleaner<DeploymentFlipper> {
 
   @Override
   public UpdateControl<DeploymentFlipper> reconcile(DeploymentFlipper resource, Context<DeploymentFlipper> context) {
