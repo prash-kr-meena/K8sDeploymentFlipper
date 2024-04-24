@@ -51,6 +51,7 @@ public class DeploymentFlipperReconciler
   EventSourceInitializer<DeploymentFlipper>, Cleaner<DeploymentFlipper> {
 
   private static final Logger log = LoggerFactory.getLogger(DeploymentFlipperReconciler.class);
+
   // we can get it from spring context by autowiring later
   private final KubernetesClient kubernetesClient;
 
@@ -60,8 +61,6 @@ public class DeploymentFlipperReconciler
 
   public DeploymentFlipperReconciler(KubernetesClient kubernetesClient) {
     this.kubernetesClient = kubernetesClient;
-    //    kubernetesClient.apps().deployments()
-    //      .inNamespace(givenNamespaceFromAPICall)
   }
 
 
@@ -71,7 +70,7 @@ public class DeploymentFlipperReconciler
     Context<DeploymentFlipper> context,
     Exception exception
   ) {
-    System.out.println("Error occurred");
+    System.out.println("Error occurred in Controller");
     return ErrorStatusUpdateControl.noStatusUpdate();
   }
 
@@ -80,7 +79,6 @@ public class DeploymentFlipperReconciler
   public Map<String, EventSource> prepareEventSources(EventSourceContext<DeploymentFlipper> context) {
     final SecondaryToPrimaryMapper<Deployment> flipperMatchingDeploymentLabels =
       (Deployment deployment) -> context.getPrimaryCache()
-        //        .list(flipper -> flipper.getSpec().getLabels().equals(deployment.getMetadata().getLabels()))
         .list(flipper -> {
           try {
             // each of the label in the spec of flipper exists in the deployments metadata labels and tha value is identical to the one of flippers
@@ -105,7 +103,6 @@ public class DeploymentFlipperReconciler
         .withSecondaryToPrimaryMapper(flipperMatchingDeploymentLabels)
         .build(), context
     );
-    // ----------------
 
     InformerEventSource<CronJob, DeploymentFlipper> cronJobEventSource = new InformerEventSource<>(
       InformerConfiguration.from(CronJob.class, context)
@@ -116,7 +113,6 @@ public class DeploymentFlipperReconciler
     // why don't we have a event source for DeploymentFlipper itself?
 
     return EventSourceInitializer.nameEventSources(deploymentEventSource, cronJobEventSource);
-    //    return Map.of();
   }
 
 
@@ -139,8 +135,8 @@ public class DeploymentFlipperReconciler
       List<Deployment> deployments = context.getClient().apps().deployments().inNamespace(namespace)
         .withLabels(flipper.getSpec().getLabels())
         .list().getItems();
-      System.out.println(
-        "Searched Deployment Resources: " + objMapper.writeValueAsString(secondaryDeploymentResources));
+
+      System.out.println("Searched Deployment Resources:" + objMapper.writeValueAsString(secondaryDeploymentResources));
       secondaryDeploymentResources = new HashSet<>(deployments);
     }
 
@@ -196,12 +192,6 @@ public class DeploymentFlipperReconciler
       }
     }
 
-    //    DeploymentFlipperStatus status = new DeploymentFlipperStatus();
-    //    status.setLastSync(LocalDateTime.now().toString());
-    //    status.setMessage("No matching deployment Found");
-    //    flipper.setStatus(status);
-    //    return UpdateControl.patchStatus(flipper);
-
     log.info("Making No Update to the DeploymentFlipper Resource");
     return UpdateControl.noUpdate();
   }
@@ -214,11 +204,6 @@ public class DeploymentFlipperReconciler
     return previousCronJob.getMetadata().getName().equals(desiredCronJob.getMetadata().getName())
       && previousCronJob.getSpec().getSchedule().equals(desiredCronJob.getSpec().getSchedule())
       && previousCronJob.getMetadata().getLabels().equals(desiredCronJob.getMetadata().getLabels());
-    // add more validation checks here # todo
-
-    // their name should be same
-    // thier content should be same?  cron time (schedule)
-    // the whole template
   }
 
 
@@ -248,9 +233,7 @@ public class DeploymentFlipperReconciler
       .getContainers().getFirst().getCommand()
       .set(2, curlCommand); // Setting Curl Command
 
-    //    
     cronJob.addOwnerReference(flipper);
-
     return cronJob;
   }
 
@@ -259,6 +242,7 @@ public class DeploymentFlipperReconciler
   public DeleteControl cleanup(DeploymentFlipper flipper, Context<DeploymentFlipper> context) {
     // here I would want to delete all the cron jobs that were created by this flipper
     System.out.println("Cleaning up");
+
     Set<CronJob> secondaryCronResources = context.getSecondaryResources(CronJob.class);
     List<Resource<CronJob>> secondaryResources = context.getClient().batch().v1()
       .cronjobs()
@@ -317,7 +301,6 @@ public class DeploymentFlipperReconciler
       });
     }
   }
-
 
 }
 // TODO
