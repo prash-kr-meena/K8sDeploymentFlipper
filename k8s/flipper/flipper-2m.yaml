@@ -4,6 +4,7 @@ metadata:
   name: deployment-flipper
   namespace: epic
 spec:
-  interval: 1m
+  # interval: 2m
+  interval: "*/2 * * * *" # every two minute
   labels:
     mesh: 'true'

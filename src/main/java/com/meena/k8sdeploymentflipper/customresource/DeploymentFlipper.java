@@ -17,4 +17,5 @@ import io.fabric8.kubernetes.model.annotation.Version;
 @ShortNames("flp")
 public class DeploymentFlipper extends CustomResource<DeploymentFlipperSpec, DeploymentFlipperStatus>
   implements Namespaced {
+
 }

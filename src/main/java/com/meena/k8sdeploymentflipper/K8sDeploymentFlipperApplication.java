@@ -1,9 +1,11 @@
 package com.meena.k8sdeploymentflipper;
 
+import static java.lang.Thread.sleep;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.javaoperatorsdk.operator.Operator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,14 +15,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class K8sDeploymentFlipperApplication {
 
   public static void main(String[] args) {
-    System.out.println("Spring Main");
     SpringApplication.run(K8sDeploymentFlipperApplication.class, args);
 
     KubernetesClient client = new KubernetesClientBuilder().build();
+    DeploymentFlipperReconciler deploymentFlipperReconciler = new DeploymentFlipperReconciler(client);
     Operator operator = new Operator();
-    operator.register(new DeploymentFlipperReconciler(client));
+    operator.register(deploymentFlipperReconciler);
+    operator.start();
 
-    System.out.println("Spring Started");
+    //    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+    //      System.out.println("Shutdown hook triggered, cleaning up...");
+    //      try {
+    //        deploymentFlipperReconciler.applicationCleanup();
+    //        //        sleep(5000); // Sleep for 5 seconds
+    //      } catch (JsonProcessingException e) {
+    //        throw new RuntimeException(e);
+    //      }
+    //    }));
   }
 
 }

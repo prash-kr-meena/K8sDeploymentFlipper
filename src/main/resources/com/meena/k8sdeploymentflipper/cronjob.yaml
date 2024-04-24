@@ -1,19 +1,19 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: hello
+  name: deployment-flipper-cronjob # updated this from code
 spec:
-  schedule: "* * * * *"
+  schedule: "* * * * *" # updated this from code
   jobTemplate:
     spec:
       template:
         spec:
           containers:
-          - name: hello
-            image: busybox:1.28
+          - name: curl-container
+            image: curlimages/curl
             imagePullPolicy: IfNotPresent
             command:
             - /bin/sh
             - -c
-            - date; echo Hello from the Kubernetes cluster
+            - curl https://www.google.com # update this from code
           restartPolicy: OnFailure

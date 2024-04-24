@@ -1,0 +1,76 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: deployment-flipper-account
+  namespace: epic # could be passed via helm values
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: deployment-flipper-access
+rules:
+- apiGroups: ["com.meena"]
+  resources: ["flippers"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"] # this is not recommended - Just doing for demo purposes
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: deployment-flipper-access-binding
+subjects:
+- kind: ServiceAccount
+  name: deployment-flipper-account
+  namespace: epic
+roleRef:
+  kind: ClusterRole
+  name: deployment-flipper-access
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-flipper
+  namespace: epic # could be passed via helm values
+  finalizers:
+    - flippers.com.meena/finalizer # so that we clean up the whole application - it would delete all cronjobs it created
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deployment-flipper
+  template:
+    metadata:
+      labels:
+        app: deployment-flipper
+    spec:
+      serviceAccountName: deployment-flipper-account
+      containers:
+        - name: deployment-flipper-container
+          image: oladockerola/deployment-flipper:1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: k8s.service.name
+              value: deployment-flipper-service
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: deployment-flipper-service
+  namespace: epic # could be passed via helm values
+spec:
+  selector:
+    app: deployment-flipper
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      nodePort: 30000 # for me to test from outside
+  type: NodePort
