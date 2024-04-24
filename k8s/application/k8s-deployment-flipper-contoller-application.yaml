@@ -50,7 +50,7 @@ spec:
       serviceAccountName: deployment-flipper-account
       containers:
         - name: deployment-flipper-container
-          image: oladockerola/deployment-flipper:1
+          image: oladockerola/deployment-flipper:2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
