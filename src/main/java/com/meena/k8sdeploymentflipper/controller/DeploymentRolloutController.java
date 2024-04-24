@@ -55,8 +55,7 @@ public class DeploymentRolloutController {
       System.out.println("Rolling out the deployment " + deployment.get().getMetadata().getName());
       deployment.rolling().restart();
       System.out.println("Adding rollout reason to deployment " + deployment.get().getMetadata().getName());
-      deployment
-        .get()
+      deployment.get()
         .getMetadata()
         .getAnnotations()
         .put("kubernetes.io/change-cause", "Restarted By DeploymentFlipper");

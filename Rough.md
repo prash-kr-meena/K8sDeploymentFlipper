@@ -9,9 +9,10 @@
 
 ```
 kubectl create namespace epic
+kubectl config set-context --current --namespace=epic
 kubectl apply -f target/classes/META-INF/fabric8/flippers.com.meena-v1.yml
 
-kubectl config set-context --current --namespace=epic  
+
 kubectl apply -f k8s/application/react-nginx-frontend-application-v1.yaml -f k8s/application/react-nginx-frontend-application-v2.yaml
 kubectl apply -f k8s/application/k8s-deployment-flipper-contoller-application.yaml
 kubectl apply -f k8s/flipper/flipper-1m.yaml
@@ -24,6 +25,11 @@ curl --location --request POST 'http://localhost:30000/rollout-restart/epic/depl
 1. It would create a cronjob to run every 1 minute
 2. we would see the resource has been pickedup as now it has the status field and the generation value
 2. Which will hit the controllers api endpoint to restart the deployment afte a minute
+
+```
+kubectl get deployments 
+kubectl rollout history deployment/react-nginx-frontend-v2
+```
 
 # Test Simulation 2
 

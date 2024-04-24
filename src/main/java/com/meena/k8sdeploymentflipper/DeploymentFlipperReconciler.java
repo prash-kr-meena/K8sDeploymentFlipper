@@ -9,7 +9,6 @@ import com.meena.k8sdeploymentflipper.customresource.DeploymentFlipper;
 import com.meena.k8sdeploymentflipper.customresource.DeploymentFlipperStatus;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
-import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.api.model.batch.v1.CronJob;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
@@ -53,14 +52,15 @@ public class DeploymentFlipperReconciler
 
   private static final Logger log = LoggerFactory.getLogger(DeploymentFlipperReconciler.class);
 
-  // we can get it from spring context by autowiring later
-  //  private final KubernetesClient kubernetesClient;
 
   @Autowired
   private KubernetesClient kubernetesClient;
 
   @Value("${k8s.service.name}")
   private String serviceName;
+
+  // we can get it from spring context by autowiring later
+  //  private final KubernetesClient kubernetesClient;
 
   //  public DeploymentFlipperReconciler(KubernetesClient kubernetesClient) {
   //    this.kubernetesClient = kubernetesClient;
