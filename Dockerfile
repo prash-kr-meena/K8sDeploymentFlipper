@@ -34,5 +34,5 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 
 # Commands
 # docker login  # if not loged in
-# docker build -t oladockerola/deployment-flipper:2 -f Dockerfile . && docker push oladockerola/deployment-flipper:2
+# docker build -t oladockerola/deployment-flipper:3 -f Dockerfile . && docker push oladockerola/deployment-flipper:3
 # docker push oladockerola/deployment-flipper:1
