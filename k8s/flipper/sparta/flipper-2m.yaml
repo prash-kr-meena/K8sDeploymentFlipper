@@ -1,0 +1,10 @@
+apiVersion: com.meena/v1
+kind: Flipper
+metadata:
+  name: deployment-flipper
+  namespace: sparta
+spec:
+  # interval: 2m
+  interval: "*/2 * * * *" # every two minute
+  labels:
+    mesh: 'true'

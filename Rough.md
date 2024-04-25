@@ -9,13 +9,17 @@
 
 ```
 kubectl create namespace epic
+kubectl create namespace sparta
+
 kubectl config set-context --current --namespace=epic
 kubectl apply -f target/classes/META-INF/fabric8/flippers.com.meena-v1.yml
 
 
-kubectl apply -f k8s/application/react-nginx-frontend-application-v1.yaml -f k8s/application/react-nginx-frontend-application-v2.yaml
+kubectl apply -f k8s/application/epic/react-nginx-frontend-application-v1.yaml -f k8s/application/epic/react-nginx-frontend-application-v2.yaml
+kubectl apply -f k8s/application/sparta/react-nginx-frontend-application-v1.yaml -f k8s/application/sparta/react-nginx-frontend-application-v2.yaml
 kubectl apply -f k8s/application/k8s-deployment-flipper-contoller-application.yaml
-kubectl apply -f k8s/flipper/flipper-1m.yaml
+kubectl apply -f k8s/flipper/epic/flipper-1m.yaml
+kubectl apply -f k8s/flipper/sparta/flipper-1m.yaml
 ```
 
 ### Result

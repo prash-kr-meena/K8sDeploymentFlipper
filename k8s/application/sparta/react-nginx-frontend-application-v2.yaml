@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-nginx-frontend-v2
+  labels:
+    mesh: 'true'
+  namespace: sparta
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: react-nginx-frontend-v2
+  template:
+    metadata:
+      labels:
+        app: react-nginx-frontend-v2
+    spec:
+      containers:
+        - name: react-nginx-frontend-v2-container
+          image: neroxxpips/react-nginx_frontend:v2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: react-nginx-service-v2
+  namespace: sparta
+spec:
+  selector:
+    app: react-nginx-frontend-v2
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30004
+  type: NodePort
+
+      

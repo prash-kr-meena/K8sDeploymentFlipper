@@ -56,8 +56,10 @@ public class DeploymentFlipperReconciler
   @Autowired
   private KubernetesClient kubernetesClient;
 
-  @Value("${k8s.service.name}")
-  private String serviceName;
+  @Value("${k8s.controller.service.name}")
+  private String controllerServiceName;
+  @Value("${k8s.controller.namespace.name}")
+  private String controllerNameSpace;
 
   // we can get it from spring context by autowiring later
   //  private final KubernetesClient kubernetesClient;
@@ -211,7 +213,7 @@ public class DeploymentFlipperReconciler
 
 
   private CronJob makeDesiredCronJob(String namespace, String cronJobName, DeploymentFlipper flipper) {
-    System.out.println("Making desired Cron job, with serviceName " + serviceName);
+    System.out.println("Making desired Cron job, with serviceName " + controllerServiceName);
 
     CronJob cronJob = ReconcilerUtils.loadYaml(CronJob.class, getClass(), "cronjob.yaml");
     cronJob.getMetadata().setName(cronJobName);
@@ -223,7 +225,7 @@ public class DeploymentFlipperReconciler
     );
 
     // currently passing interval as cron-scheduler instead of 12h, 5m etc : Todo
-    String baseUrl = MessageFormat.format("http://{0}.{1}.svc.cluster.local", serviceName, namespace);
+    String baseUrl = MessageFormat.format("http://{0}.{1}.svc.cluster.local", controllerServiceName, controllerNameSpace);
     String controllerRolloutEndpoint = MessageFormat.format(
       "{0}/rollout-restart/{1}/{2}", baseUrl, namespace, flipper.getMetadata().getName()
     );
